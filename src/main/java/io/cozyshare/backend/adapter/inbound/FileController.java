@@ -14,7 +14,7 @@ public class FileController {
     private FileSharingClient fileSharingService;
 
     @PostMapping("/share")
-    public SharedFileReturnResource shareFile(@RequestBody SharedFileResource sharedFileResource) {
+    public SharedFileReturnResource shareFile(@RequestBody SharedFileResource sharedFileResource) throws Exception {
         return fileSharingService.shareFile(sharedFileResource);
     }
 
