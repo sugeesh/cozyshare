@@ -12,7 +12,7 @@
 	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>backend</name>
-	<description>Simple public file sharing application backend</description>
+	<description>Simple public sharedFile sharing application backend</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -31,6 +31,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.12.180</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
