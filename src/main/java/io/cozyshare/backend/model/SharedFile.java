@@ -21,14 +21,21 @@ public class SharedFile {
 
     private String redirectUrl;
 
+    private String uuid;
+
+    private int fileNumber;
+
     public SharedFile() {
     }
 
-    public SharedFile(long id, Date startDate, Date endDate, String fileKey) {
+    public SharedFile(long id, Date startDate, Date endDate, String fileKey, String redirectUrl, String uuid, int fileNumber) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.fileKey = fileKey;
+        this.redirectUrl = redirectUrl;
+        this.uuid = uuid;
+        this.fileNumber = fileNumber;
     }
 
     public long getId() {
@@ -72,6 +79,21 @@ public class SharedFile {
         this.redirectUrl = redirectUrl;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public int getFileNumber() {
+        return fileNumber;
+    }
+
+    public void setFileNumber(int fileNumber) {
+        this.fileNumber = fileNumber;
+    }
 
     @Override
     public String toString() {
@@ -81,6 +103,8 @@ public class SharedFile {
                 ", endDate=" + endDate +
                 ", fileKey='" + fileKey + '\'' +
                 ", redirectUrl='" + redirectUrl + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", fileNumber=" + fileNumber +
                 '}';
     }
 }

@@ -11,7 +11,6 @@ import java.io.ByteArrayOutputStream;
 @Service
 public class QRImageGenerateService {
 
-
     public BufferedImage generateQRCodeImage(String barcodeUrl) throws Exception {
         ByteArrayOutputStream stream = QRCode
                 .from(barcodeUrl)

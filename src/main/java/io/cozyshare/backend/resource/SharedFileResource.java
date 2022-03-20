@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.cozyshare.backend.model.SharedFile;
 import io.cozyshare.backend.util.DateTimeUtil;
 
+import java.util.UUID;
+
 public class SharedFileResource {
 
     private int id;
@@ -69,11 +71,13 @@ public class SharedFileResource {
                 '}';
     }
 
-    public SharedFile toFileModel() {
+    public SharedFile toFileModel(int fileNumber) {
         SharedFile sharedFile = new SharedFile();
+        sharedFile.setUuid(UUID.randomUUID().toString());
         sharedFile.setFileKey(this.fileKey);
         sharedFile.setStartDate(DateTimeUtil.getDateByString(this.startDate));
         sharedFile.setEndDate(DateTimeUtil.getDateByString(this.endDate));
+        sharedFile.setFileNumber(fileNumber);
         return sharedFile;
     }
 }

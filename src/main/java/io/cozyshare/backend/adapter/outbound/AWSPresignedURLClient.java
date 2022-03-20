@@ -1,4 +1,4 @@
-package io.cozyshare.backend.service;
+package io.cozyshare.backend.adapter.outbound;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.HttpMethod;
@@ -14,9 +14,9 @@ import java.net.URL;
 import java.time.Instant;
 
 @Service
-public class GeneratePresignedURLService {
-    private final String bucketName = "*** Bucket name ***";
+public class AWSPresignedURLClient {
 
+    private final String bucketName = "*** Bucket name ***";
 
     public String generatePresignedURL(String objectKey){
         Regions clientRegion = Regions.DEFAULT_REGION;
@@ -29,6 +29,7 @@ public class GeneratePresignedURLService {
 
             // Set the presigned URL to expire after one hour.
             java.util.Date expiration = new java.util.Date();
+            //TODO exp time needs to be change with end date from the database.
             long expTimeMillis = Instant.now().toEpochMilli();
             expTimeMillis += 1000 * 60 * 60;
             expiration.setTime(expTimeMillis);

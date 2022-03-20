@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface SharedFileRepository extends JpaRepository<SharedFile, Integer> {
 
-    Optional<SharedFile> findByFileKey(String key);
+    Optional<SharedFile> findByFileNumber(int fileNumber);
+    Optional<SharedFile> findByUuid(String uuid);
 
 }

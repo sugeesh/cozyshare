@@ -27,6 +27,12 @@ public class SharedFileReturnResource {
         this.sharingQR = sharingQR;
     }
 
+    public SharedFileReturnResource(String sharingUrl, BufferedImage sharingQR, int sharingNumber) {
+        this.sharingUrl = sharingUrl;
+        this.sharingQR = sharingQR;
+        this.sharingNumber = sharingNumber;
+    }
+
     public String getSharingUrl() {
         return sharingUrl;
     }
