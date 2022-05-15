@@ -15,11 +15,13 @@ public class FileController {
     private FileSharingService fileSharingService;
 
     @PostMapping()
+    @CrossOrigin("*")
     public SharedFileReturnResource shareFile(@RequestBody SharedFileResource sharedFileResource) throws Exception {
         return fileSharingService.shareFile(sharedFileResource);
     }
 
     @GetMapping("/number/{file_number}")
+    @CrossOrigin("*")
     public ResponseEntity<Void> getRedirectUrlFromFileNumber(@PathVariable("file_number") int fileNumber) throws Exception {
         return fileSharingService.getRedirectUrlFromFileNumber(fileNumber);
     }

@@ -40,7 +40,7 @@ public class FileSharingService {
         String sharingUrl = FILE_SHARING_URL + savedFile.getUuid();
         BufferedImage sharingQRImage = qrImageGenerateService.generateQRCodeImage(sharingUrl);
 
-        return new SharedFileReturnResource(sharingUrl, sharingQRImage, fileNumber);
+        return new SharedFileReturnResource(sharingUrl, null, fileNumber);
     }
 
 
