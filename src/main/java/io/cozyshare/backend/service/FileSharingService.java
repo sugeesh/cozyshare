@@ -1,16 +1,16 @@
 package io.cozyshare.backend.service;
 
+import io.cozyshare.backend.adapter.outbound.AWSPresignedURLClient;
 import io.cozyshare.backend.model.SharedFile;
 import io.cozyshare.backend.repository.SharedFileRepository;
 import io.cozyshare.backend.resource.SharedFileResource;
 import io.cozyshare.backend.resource.SharedFileReturnResource;
-import io.cozyshare.backend.adapter.outbound.AWSPresignedURLClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Optional;
 
@@ -24,22 +24,19 @@ public class FileSharingService {
     private AWSPresignedURLClient generatePresignedURLService;
 
     @Autowired
-    private QRImageGenerateService qrImageGenerateService;
-
-    @Autowired
     private FileNumberService fileNumberService;
 
-    private final String FILE_SHARING_URL = "http://localhost:8080/redirect/file/";
+    @Value("${cozyshare.file.sharingurl}")
+    private String FILE_SHARING_URL;
 
-    private final String FILE_SHARING_ERROR_URL = "http://localhost:8080/error";
+    @Value("${cozyshare.file.errorurl}")
+    private String FILE_SHARING_ERROR_URL;
 
     public SharedFileReturnResource shareFile(SharedFileResource sharedFileResource) throws Exception {
         int fileNumber = fileNumberService.generateFileNumber();
         SharedFile savedFile = fileRepository.save(sharedFileResource.toFileModel(fileNumber));
 
         String sharingUrl = FILE_SHARING_URL + savedFile.getUuid();
-        BufferedImage sharingQRImage = qrImageGenerateService.generateQRCodeImage(sharingUrl);
-
         return new SharedFileReturnResource(sharingUrl, null, fileNumber);
     }
 

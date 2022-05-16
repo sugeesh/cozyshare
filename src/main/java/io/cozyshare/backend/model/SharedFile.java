@@ -1,9 +1,6 @@
 package io.cozyshare.backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -19,6 +16,7 @@ public class SharedFile {
 
     private String fileKey;
 
+    @Lob
     private String redirectUrl;
 
     private String uuid;

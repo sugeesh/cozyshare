@@ -3,11 +3,13 @@ package io.cozyshare.backend.adapter.outbound;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
@@ -16,15 +18,16 @@ import java.time.Instant;
 @Service
 public class AWSPresignedURLClient {
 
-    private final String bucketName = "*** Bucket name ***";
+    @Value("${cozyshare.s3.bucketname}")
+    private String bucketName;
 
     public String generatePresignedURL(String objectKey){
-        Regions clientRegion = Regions.DEFAULT_REGION;
+        Regions clientRegion = Regions.US_EAST_1;
 
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withRegion(clientRegion)
-                    .withCredentials(new ProfileCredentialsProvider())
+                    .withCredentials(new InstanceProfileCredentialsProvider(false))
                     .build();
 
             // Set the presigned URL to expire after one hour.
