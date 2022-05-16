@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -43,26 +44,31 @@ public class FileSharingService {
 
     public String getFileURLForUuid(String uuid) {
         Optional<SharedFile> byFileKey = fileRepository.findByUuid(uuid);
-        if(byFileKey.isPresent()){
+        if (byFileKey.isPresent()) {
             SharedFile sharedFile = byFileKey.get();
-            if (sharedFile.getRedirectUrl() != null){
+            if (sharedFile.getRedirectUrl() != null) {
                 return sharedFile.getRedirectUrl();
             }
-            String presignedURL = generatePresignedURLService.generatePresignedURL(sharedFile.getFileKey());
-            sharedFile.setRedirectUrl(presignedURL);
-            fileRepository.save(sharedFile);
-            return presignedURL;
+            Date startDate = byFileKey.get().getStartDate();
+            Date endDate = byFileKey.get().getEndDate();
+
+            if(startDate.before(new Date())) {
+                String presignedURL = generatePresignedURLService.generatePresignedURL(sharedFile.getFileKey(), endDate);
+                sharedFile.setRedirectUrl(presignedURL);
+                fileRepository.save(sharedFile);
+                return presignedURL;
+            }
         }
         return null;
     }
 
     public ResponseEntity<Void> getRedirectUrlFromFileNumber(int fileNumber) {
         Optional<SharedFile> byFileNumber = fileRepository.findByFileNumber(fileNumber);
-        if(byFileNumber.isPresent()){
+        if (byFileNumber.isPresent()) {
             SharedFile sharedFile = byFileNumber.get();
             return redirectForFile(sharedFile.getUuid());
         }
-        throw new RuntimeException("Can't find the file from number.");
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(FILE_SHARING_ERROR_URL)).build();
     }
 
     public ResponseEntity<Void> redirectForFile(String uuid) {

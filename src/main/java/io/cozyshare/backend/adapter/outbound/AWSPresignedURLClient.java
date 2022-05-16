@@ -4,7 +4,6 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -13,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
-import java.time.Instant;
+import java.util.Date;
 
 @Service
 public class AWSPresignedURLClient {
@@ -21,7 +20,7 @@ public class AWSPresignedURLClient {
     @Value("${cozyshare.s3.bucketname}")
     private String bucketName;
 
-    public String generatePresignedURL(String objectKey){
+    public String generatePresignedURL(String objectKey, Date endDate){
         Regions clientRegion = Regions.US_EAST_1;
 
         try {
@@ -31,11 +30,8 @@ public class AWSPresignedURLClient {
                     .build();
 
             // Set the presigned URL to expire after one hour.
-            java.util.Date expiration = new java.util.Date();
-            //TODO exp time needs to be change with end date from the database.
-            long expTimeMillis = Instant.now().toEpochMilli();
-            expTimeMillis += 1000 * 60 * 60;
-            expiration.setTime(expTimeMillis);
+            java.util.Date expiration = endDate;
+            expiration.setTime(endDate.getTime());
 
             // Generate the presigned URL.
             System.out.println("Generating pre-signed URL.");
